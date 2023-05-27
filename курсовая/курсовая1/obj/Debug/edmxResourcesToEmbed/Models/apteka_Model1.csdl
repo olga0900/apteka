@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="aptekaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__ClientID__3E52440B" FromRole="Client" ToRole="Orders" />
+    <NavigationProperty Name="Serviceserv" Relationship="Self.FK__Servicese__Clien__412EB0B6" FromRole="Client" ToRole="Serviceserv" />
+  </EntityType>
+  <EntityType Name="Logins">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Medicine">
+    <Key>
+      <PropertyRef Name="MedicinesID" />
+    </Key>
+    <Property Name="MedicinesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MedicinesName" Type="String" MaxLength="55" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Category" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Int32" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Medicine__3D5E1FD2" FromRole="Medicine" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrdersID" />
+    </Key>
+    <Property Name="OrdersID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MedicinesID" Type="Int32" />
+    <Property Name="ClientID" Type="Int32" />
+    <Property Name="Statusorders" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__Orders__ClientID__3E52440B" FromRole="Orders" ToRole="Client" />
+    <NavigationProperty Name="Medicine" Relationship="Self.FK__Orders__Medicine__3D5E1FD2" FromRole="Orders" ToRole="Medicine" />
+  </EntityType>
+  <EntityType Name="Serviceserv">
+    <Key>
+      <PropertyRef Name="RegistrationID" />
+    </Key>
+    <Property Name="RegistrationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientID" Type="Int32" />
+    <Property Name="DateofServ" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__Servicese__Clien__412EB0B6" FromRole="Serviceserv" ToRole="Client" />
+  </EntityType>
+  <Association Name="FK__Orders__ClientID__3E52440B">
+    <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Servicese__Clien__412EB0B6">
+    <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="Serviceserv" Type="Self.Serviceserv" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="Serviceserv">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Orders__Medicine__3D5E1FD2">
+    <End Role="Medicine" Type="Self.Medicine" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicine">
+        <PropertyRef Name="MedicinesID" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="MedicinesID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="aptekaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Client" EntityType="Self.Client" />
+    <EntitySet Name="Logins" EntityType="Self.Logins" />
+    <EntitySet Name="Medicine" EntityType="Self.Medicine" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" />
+    <EntitySet Name="Serviceserv" EntityType="Self.Serviceserv" />
+    <AssociationSet Name="FK__Orders__ClientID__3E52440B" Association="Self.FK__Orders__ClientID__3E52440B">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Servicese__Clien__412EB0B6" Association="Self.FK__Servicese__Clien__412EB0B6">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Serviceserv" EntitySet="Serviceserv" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Orders__Medicine__3D5E1FD2" Association="Self.FK__Orders__Medicine__3D5E1FD2">
+      <End Role="Medicine" EntitySet="Medicine" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
